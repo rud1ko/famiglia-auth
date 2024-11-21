@@ -1,5 +1,6 @@
 package com.famiglia.famiglia_auth.model;
 
+import com.famiglia.famiglia_auth.enums.Role;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,4 +20,8 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

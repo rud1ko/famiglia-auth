@@ -1,5 +1,6 @@
 package com.famiglia.famiglia_auth.model.imlp;
 
+import com.famiglia.famiglia_auth.enums.Role;
 import com.famiglia.famiglia_auth.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,13 +16,15 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private Role role;
 
     public static UserDetailsImpl build(User user) {
         return new UserDetailsImpl(
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getPassword()
+                user.getPassword(),
+                user.getRole()
         );
     }
 

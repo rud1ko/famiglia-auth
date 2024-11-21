@@ -45,6 +45,7 @@ public class SecurityController {
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(hashedPassword);
+        user.setRole(signUpRequest.getRole());
 
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("Success response");
