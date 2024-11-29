@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -28,9 +29,9 @@ public class JwtCore {
         claims.put("role", userDetails.getRole().name());
 
         return Jwts.builder()
-                .setSubject((userDetails.getUsername()))
-                .setIssuedAt(Date.from(Instant.now()))
                 .setClaims(claims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(Date.from(Instant.now()))
                 .setExpiration(Date.from(Instant.now().plusMillis(Long.parseLong(lifetime))))
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
@@ -39,8 +40,19 @@ public class JwtCore {
     public String getNameFromJwt(String token) {
         return Jwts.parser()
                 .setSigningKey(secret)
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public Claims getAllClaimsFromToken(String token){
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public List<String> getRoles(String token){
+        return List.of(getAllClaimsFromToken(token).get("role", String.class));
     }
 }
